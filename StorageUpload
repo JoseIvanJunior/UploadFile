@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Storage Web</title>
+</head>
+
+<body>
+
+    <div class="main" align="left">
+        <h1 align="left">File Upload</h1>
+        <br />
+        <input type="file" id="fileButton" value="upload" />
+        <br />
+        <br />
+        <button type="button" id="uploader">Enviar</button>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "<your-api-key>",
+            authDomain: "<your-auth-domain>",
+            databaseURL: "<your-database-url>",
+            projectId: "<your-projectId>",
+            storageBucket: "<your-storage-bucket>",
+            messagingSenderId: "<your-messagingSenderId>"
+        };
+        firebase.initializeApp(config);
+        //-------------------------------------------------------------------------------------
+  
+        const uploader = document.getElementById('uploader');
+        const fileButton = document.getElementById('fileButton');
+
+        fileButton.addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            const storageRef = firebase.storage().ref('Arquivos/' + file.name);
+            const submitFile = storageRef.put(file);
+
+            submitFile.on('state_changed', function button(snapshot) {
+                const btn = snapshot;
+                uploader.value = btn;
+
+            }, function error(err) {
+
+
+            }, function complete() {
+                console.log('Sucesso')
+            });
+        });
+    </script>
+</body>
+
+</html>
